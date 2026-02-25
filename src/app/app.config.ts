@@ -1,9 +1,18 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Lara from '@primeng/themes/lara';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    
+    provideAnimationsAsync(),
+    // Injeção do PrimeNG e do Tema
+    providePrimeNG({
+      theme: {
+        preset: Lara
+      }
+    })
   ]
 };

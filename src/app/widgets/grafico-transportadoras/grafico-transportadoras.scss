@@ -1,0 +1,27 @@
+.widget-container {
+  height: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.transport-bg {
+  background-color: #f3e5f5;
+  color: #4a148c;
+}
+
+h3 {
+  margin-top: 0;
+  font-size: 1.1em;
+}
+
+.mock-chart {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  margin-top: 10px;
+}

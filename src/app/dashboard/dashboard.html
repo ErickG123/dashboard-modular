@@ -1,0 +1,136 @@
+<div class="dashboard-wrapper" [class.no-scroll]="fullscreenSectionId() || fullscreenWidgetId()">
+
+  <div class="global-toolbar">
+    <h2>Dashboard Operacional</h2>
+    <p-button label="Personalizar" icon="pi pi-cog" (onClick)="abrirPersonalizacao()"></p-button>
+  </div>
+
+  <div class="sections-container">
+    @for (secao of secoes(); track secao.id) {
+    <div class="section-card" [class.fullscreen-section]="fullscreenSectionId() === secao.id">
+
+      <div class="section-header">
+        <div class="section-title">
+          <span class="title-text">{{ secao.title }}</span>
+          <span class="widget-count">({{ secao.widgets.length }} gráficos)</span>
+        </div>
+
+        <div class="section-actions">
+          <p-button [icon]="fullscreenSectionId() === secao.id ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"
+            variant="text" (onClick)="toggleFullscreenSection(secao.id)">
+          </p-button>
+          <p-button icon="pi pi-trash" severity="danger" variant="text" (onClick)="removerSecao(secao.id)"></p-button>
+        </div>
+      </div>
+
+      <div class="section-content flex-row" cdkDropList [cdkDropListData]="secao.widgets"
+        (cdkDropListDropped)="drop($event)">
+
+        @if (secao.widgets.length === 0) {
+        <div class="empty-state">Sessão vazia.</div>
+        }
+
+        @for (widget of secao.widgets; track widget.id) {
+        <div class="widget-card" cdkDrag [style.flex]="fullscreenWidgetId() === widget.id ? 'none' : widget.flex"
+          [style.height.px]="fullscreenWidgetId() === widget.id ? null : (widget.height * 100)"
+          [class.fullscreen-widget]="fullscreenWidgetId() === widget.id">
+
+          <div class="widget-header">
+            <span class="drag-handle" cdkDragHandle><i class="pi pi-arrows-alt"></i> Mover</span>
+
+            <div class="widget-controls">
+              <i class="pi pi-arrows-h indicator-icon"></i>
+              <button class="icon-btn" (click)="ajustarLargura(secao.id, widget.id, -1)"
+                [disabled]="widget.flex <= 1 || fullscreenWidgetId() === widget.id"><i class="pi pi-minus"></i></button>
+              <span class="flex-value">{{ widget.flex }}</span>
+              <button class="icon-btn" (click)="ajustarLargura(secao.id, widget.id, 1)"
+                [disabled]="widget.flex >= 10 || fullscreenWidgetId() === widget.id"><i class="pi pi-plus"></i></button>
+
+              <div class="control-divider"></div>
+
+              <i class="pi pi-arrows-v indicator-icon"></i>
+              <button class="icon-btn" (click)="ajustarAltura(secao.id, widget.id, -1)"
+                [disabled]="widget.height <= 1 || fullscreenWidgetId() === widget.id"><i
+                  class="pi pi-minus"></i></button>
+              <span class="flex-value">{{ widget.height }}</span>
+              <button class="icon-btn" (click)="ajustarAltura(secao.id, widget.id, 1)"
+                [disabled]="widget.height >= 10 || fullscreenWidgetId() === widget.id"><i
+                  class="pi pi-plus"></i></button>
+
+              <div class="control-divider"></div>
+
+              <button class="icon-btn" (click)="toggleFullscreenWidget(widget.id)">
+                <i [class]="fullscreenWidgetId() === widget.id ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"></i>
+              </button>
+
+              <button class="icon-btn btn-fechar" (click)="removerWidget(secao.id, widget.id)"><i
+                  class="pi pi-times"></i></button>
+            </div>
+          </div>
+
+          <div class="widget-content-area">
+            @if (getComponentByType(widget.type); as componentClass) {
+            <ng-container *ngComponentOutlet="componentClass; inputs: { dados: widget.inputs }"></ng-container>
+            }
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>
+
+<p-dialog header="Personalizar Dashboard" [visible]="modalVisivel()" (visibleChange)="modalVisivel.set($event)"
+  [modal]="true" [draggable]="false" [resizable]="false" [style]="{ width: '90vw', maxWidth: '480px' }"
+  styleClass="custom-modal">
+
+  <div class="modal-content-styled">
+
+    <div class="modal-section">
+      <div class="section-heading">
+        <i class="pi pi-folder-plus text-blue"></i>
+        <h3>Nova Sessão</h3>
+      </div>
+      <p class="section-desc">Crie um novo agrupamento horizontal para organizar seus gráficos.</p>
+
+      <div class="input-with-button">
+        <input pInputText placeholder="Ex: Indicadores" [ngModel]="novaSecaoNome()"
+          (ngModelChange)="novaSecaoNome.set($event)" />
+        <p-button label="Criar" icon="pi pi-plus" (onClick)="criarSessao()" [disabled]="!novaSecaoNome()"
+          styleClass="btn-create"></p-button>
+      </div>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-section pb-4">
+      <div class="section-heading">
+        <i class="pi pi-chart-bar text-purple"></i>
+        <h3>Adicionar Gráfico</h3>
+      </div>
+      <p class="section-desc">Insira um novo indicador em uma das sessões existentes.</p>
+
+      <div class="form-group">
+        <label>Sessão de Destino:</label>
+        <p-select [options]="opcoesSessoes()" [ngModel]="secaoSelecionadaModal()"
+          (ngModelChange)="secaoSelecionadaModal.set($event)" placeholder="Escolha a Sessão" optionLabel="label"
+          optionValue="value" appendTo="body" [style]="{'width':'100%'}">
+        </p-select>
+      </div>
+
+      <div class="form-group mt-3">
+        <label>Selecione o Gráfico:</label>
+        <p-select [options]="graficosDisponiveis" [ngModel]="graficoSelecionadoModal()"
+          (ngModelChange)="graficoSelecionadoModal.set($event)" placeholder="Escolha o Gráfico" optionLabel="label"
+          optionValue="value" appendTo="body" [style]="{'width':'100%'}">
+        </p-select>
+      </div>
+
+      <p-button label="Adicionar ao Dashboard" icon="pi pi-check" styleClass="w-full mt-4 btn-add"
+        (onClick)="adicionarWidget()" [disabled]="!secaoSelecionadaModal() || !graficoSelecionadoModal()">
+      </p-button>
+    </div>
+
+  </div>
+</p-dialog>

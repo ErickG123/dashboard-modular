@@ -1,0 +1,39 @@
+<div class="dashboard-wrapper">
+  <div class="toolbar">
+    <h2>Painel Modular</h2>
+    <div class="actions">
+      <p-select [options]="graficosDisponiveis" [ngModel]="graficoSelecionado()"
+        (ngModelChange)="graficoSelecionado.set($event)" placeholder="Selecione um Gráfico" optionLabel="label"
+        optionValue="value" [style]="{'min-width':'200px'}">
+      </p-select>
+
+      <p-button label="Adicionar" icon="pi pi-plus" (onClick)="adicionarWidget()" [disabled]="!graficoSelecionado()">
+      </p-button>
+    </div>
+  </div>
+
+  <div class="grid-container">
+    <ktd-grid [cols]="cols" [rowHeight]="rowHeight" [layout]="layout()" (layoutUpdated)="onLayoutUpdated($event)">
+      @for (item of layout(); track item.id) {
+      <ktd-grid-item [id]="item.id">
+        <div class="widget-card">
+          <div class="widget-header">
+            <span class="drag-handle" ktd-grid-drag-handle>
+              <i class="pi pi-arrows-alt"></i> Mover
+            </span>
+            <button class="btn-fechar" (click)="removerWidget(item.id)">
+              <i class="pi pi-times"></i>
+            </button>
+          </div>
+          <div class="widget-content">
+            @if (getWidgetData(item.id); as widgetInfo) {
+            <ng-container
+              *ngComponentOutlet="getComponentByType(widgetInfo.type); inputs: { dados: widgetInfo.inputs }"></ng-container>
+            }
+          </div>
+        </div>
+      </ktd-grid-item>
+      }
+    </ktd-grid>
+  </div>
+</div>

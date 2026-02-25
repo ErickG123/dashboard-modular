@@ -1,0 +1,387 @@
+.dashboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f4f6f9;
+  overflow-y: auto;
+
+  &.no-scroll {
+    overflow: hidden;
+  }
+}
+
+.global-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+  }
+}
+
+.sections-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-card {
+  background: transparent;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+
+  &.fullscreen-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9000;
+    background-color: #f4f6f9;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 0;
+
+    .section-content.flex-row {
+      flex-wrap: wrap;
+      height: calc(100vh - 80px);
+      overflow-y: auto;
+    }
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 0 5px;
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .title-text {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .widget-count {
+      color: #64748b;
+      font-size: 0.9em;
+    }
+  }
+
+  .section-actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.section-content.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 10px;
+  min-height: 250px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 2px dashed #e2e8f0;
+  border-radius: 8px;
+  padding: 10px;
+  overflow-x: auto;
+  align-items: flex-start;
+}
+
+.empty-state {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-style: italic;
+  min-height: 100px;
+}
+
+.widget-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  min-width: 300px;
+  transition: flex 0.3s ease, height 0.3s ease, transform 0.2s;
+
+  &.cdk-drag-preview {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+    opacity: 0.9;
+  }
+
+  &.cdk-drag-placeholder {
+    opacity: 0;
+  }
+
+  &.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  &.fullscreen-widget {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    border-radius: 0;
+    margin: 0;
+    border: none;
+
+    .drag-handle {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  }
+}
+
+.widget-header {
+  background: #f8fafc;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+
+  .drag-handle {
+    cursor: grab;
+    color: #64748b;
+    font-size: 0.85em;
+    font-weight: 600;
+    user-select: none;
+
+    i {
+      margin-right: 5px;
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  .widget-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .indicator-icon {
+      font-size: 0.8em;
+      color: #94a3b8;
+      margin-right: 2px;
+    }
+
+    .control-divider {
+      width: 1px;
+      height: 16px;
+      background-color: #cbd5e1;
+      margin: 0 4px;
+    }
+
+    .icon-btn {
+      background: none;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      color: #64748b;
+      cursor: pointer;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+
+      i {
+        font-size: 0.85em;
+      }
+
+      &:hover:not([disabled]) {
+        background: #e2e8f0;
+        color: #0f172a;
+      }
+
+      &[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &.btn-fechar {
+        border: none;
+        color: #ef4444;
+
+        &:hover {
+          background: #fee2e2;
+        }
+      }
+    }
+
+    .flex-value {
+      font-size: 0.85em;
+      font-weight: bold;
+      color: #0f172a;
+      min-width: 16px;
+      text-align: center;
+    }
+  }
+}
+
+.widget-content-area {
+  flex-grow: 1;
+  padding: 15px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   ESTILOS DO MODAL
+   ========================================= */
+
+::ng-deep .custom-modal {
+  .p-dialog-content {
+    padding: 0 !important;
+    background-color: #f1f5f9;
+    overflow-y: visible !important;
+    /* Permite que o select não seja cortado */
+  }
+
+  .p-dialog-header {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 1.2rem 1.5rem;
+
+    .p-dialog-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+  }
+}
+
+.modal-content-styled {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-section {
+  padding: 1.5rem;
+  background-color: #ffffff;
+
+  &.pb-4 {
+    padding-bottom: 2rem;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+
+    .text-blue {
+      color: #3b82f6;
+    }
+
+    .text-purple {
+      color: #8b5cf6;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      color: #334155;
+      font-weight: 700;
+    }
+  }
+
+  .section-desc {
+    margin: 0 0 1rem 0;
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+}
+
+.modal-divider {
+  height: 1px;
+  background-color: #e2e8f0;
+  width: 100%;
+}
+
+.input-with-button {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  /* Em telas muito pequenas o botão desce graciosamente */
+
+  input {
+    flex: 1;
+    min-width: 150px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    transition: all 0.2s;
+
+    &:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px #3b82f6;
+      outline: none;
+    }
+  }
+
+  ::ng-deep .btn-create {
+    background-color: #58d68d !important;
+    border: none !important;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+
+    &:hover:not([disabled]) {
+      background-color: #4acb7f !important;
+    }
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+  }
+}
+
+.mt-3 {
+  margin-top: 15px;
+}
+
+.mt-4 {
+  margin-top: 25px;
+}
+
+::ng-deep .w-full.btn-add {
+  width: 100%;
+
+  button {
+    width: 100%;
+    justify-content: center;
+    font-weight: 600;
+  }
+}
