@@ -1,0 +1,48 @@
+<div class="viewer-wrapper" [class.no-scroll]="fullscreenSectionId() || fullscreenWidgetId()">
+  @if (activeLayout(); as layout) {
+  <div class="viewer-header">
+    <h2>{{ layout.name }}</h2>
+  </div>
+
+  <div class="sections-container">
+    @for (secao of layout.sections; track secao.id) {
+    <div class="section-card" [class.fullscreen-section]="fullscreenSectionId() === secao.id">
+
+      <div class="section-header">
+        <h3>{{ secao.title }}</h3>
+        <p-button [icon]="fullscreenSectionId() === secao.id ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"
+          variant="text" (onClick)="toggleFullscreenSection(secao.id)"></p-button>
+      </div>
+
+      <div class="section-content flex-row">
+        @if (secao.widgets.length === 0) {
+        <div class="empty-state">Sessão vazia.</div>
+        }
+
+        @for (widget of secao.widgets; track widget.id) {
+        <div class="widget-card" [style.flex]="fullscreenWidgetId() === widget.id ? 'none' : widget.flex"
+          [style.height.px]="fullscreenWidgetId() === widget.id ? null : (widget.height * 100)"
+          [class.fullscreen-widget]="fullscreenWidgetId() === widget.id">
+
+          <div class="widget-header">
+            <span class="widget-title">Indicador</span>
+            <button class="icon-btn" (click)="toggleFullscreenWidget(widget.id)">
+              <i [class]="fullscreenWidgetId() === widget.id ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"></i>
+            </button>
+          </div>
+
+          <div class="widget-content-area">
+            @if (getComponentByType(widget.type); as componentClass) {
+            <ng-container *ngComponentOutlet="componentClass; inputs: { dados: widget.inputs }"></ng-container>
+            }
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="empty-state-global">Nenhum layout ativo no momento. Vá para o gerenciador e ative um layout.</div>
+  }
+</div>

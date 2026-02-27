@@ -1,7 +1,17 @@
-<div class="widget-container kanban-bg">
-  <h3>Resumo do Kanban</h3>
-  <div class="stats">
-    <p>Pendentes: <strong>{{ dados?.pendentes || 0 }}</strong></p>
-    <p>Em Andamento: <strong>{{ dados?.emAndamento || 0 }}</strong></p>
+<div class="kpi-grid">
+  @for (kpi of kpis; track kpi.titulo) {
+  <div class="kpi-card">
+    <div class="kpi-header">
+      <span class="kpi-title">{{ kpi.titulo }}</span>
+      <i [class]="kpi.icon" [style.color]="kpi.cor"></i>
+    </div>
+    <div class="kpi-body">
+      <span class="kpi-value">{{ kpi.valor }}</span>
+      <span class="kpi-badge" [class.positive]="kpi.variacao.startsWith('+')"
+        [class.negative]="kpi.variacao.startsWith('-')">
+        {{ kpi.variacao }}
+      </span>
+    </div>
   </div>
+  }
 </div>

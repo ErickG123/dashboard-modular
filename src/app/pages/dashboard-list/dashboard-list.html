@@ -1,0 +1,39 @@
+<div class="list-wrapper">
+  <div class="header-actions">
+    <h2>Meus Layouts</h2>
+    <div class="create-form">
+      <input pInputText placeholder="Nome do novo layout" [ngModel]="novoLayoutNome()"
+        (ngModelChange)="novoLayoutNome.set($event)" />
+      <p-button label="Criar Layout" icon="pi pi-plus" (onClick)="criarLayout()"
+        [disabled]="!novoLayoutNome()"></p-button>
+    </div>
+  </div>
+
+  <div class="layouts-grid">
+    @for (layout of dashService.layouts(); track layout.id) {
+    <div class="layout-card" [class.active-card]="layout.isActive">
+      <div class="card-header">
+        <h3>{{ layout.name }}</h3>
+        @if (layout.isActive) {
+        <span class="badge-active">Ativo</span>
+        }
+      </div>
+
+      <div class="card-body">
+        <p>{{ layout.sections.length }} Sessões configuradas</p>
+      </div>
+
+      <div class="card-actions">
+        <p-button label="Editar" icon="pi pi-pencil" variant="outlined" (onClick)="editar(layout.id)"></p-button>
+
+        @if (!layout.isActive) {
+        <p-button label="Ativar" icon="pi pi-check" severity="success" variant="outlined"
+          (onClick)="dashService.setActiveLayout(layout.id)"></p-button>
+        <p-button icon="pi pi-trash" severity="danger" variant="text"
+          (onClick)="dashService.deleteLayout(layout.id)"></p-button>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>

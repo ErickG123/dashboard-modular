@@ -1,0 +1,25 @@
+<div class="app-container">
+  <nav class="top-menu">
+    <div class="logo">
+      <i class="pi pi-chart-pie"></i>
+      <span>Sistema de Painéis</span>
+    </div>
+    <div class="menu-items">
+      <button class="menu-btn" (click)="toggleTheme()">
+        <i [class]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"></i>
+      </button>
+      <button class="menu-btn" [class.active]="currentView() === 'viewer'" (click)="navigateTo('viewer')">
+        <i class="pi pi-desktop"></i> Visualizar Painel
+      </button>
+      <button class="menu-btn" [class.active]="currentView() === 'list'" (click)="navigateTo('list')">
+        <i class="pi pi-list"></i> Gerenciar Layouts
+      </button>
+    </div>
+  </nav>
+  <div class="view-area">
+    @if (currentView() === 'viewer') { <app-dashboard-viewer></app-dashboard-viewer> }
+    @if (currentView() === 'list') { <app-dashboard-list (onEdit)="editLayout($event)"></app-dashboard-list> }
+    @if (currentView() === 'editor' && editingLayoutId()) { <app-dashboard-editor [layoutId]="editingLayoutId()!"
+      (onBack)="navigateTo('list')"></app-dashboard-editor> }
+  </div>
+</div>

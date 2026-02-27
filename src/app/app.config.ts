@@ -8,7 +8,6 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideAnimationsAsync(),
-    // Injeção do PrimeNG e do Tema
     providePrimeNG({
       theme: {
         preset: Lara

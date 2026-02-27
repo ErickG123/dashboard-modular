@@ -1,10 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { DashboardLivre } from "./dashboard-livre/dashboard-livre";
-import { Dashboard } from "./dashboard/dashboard";
+import { DashboardContainer } from "./pages/dashboard-container/dashboard-container";
 
 @Component({
   selector: 'app-root',
-  imports: [DashboardLivre, Dashboard],
+  imports: [DashboardContainer],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

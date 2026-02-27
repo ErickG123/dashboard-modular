@@ -1,5 +1,39 @@
 @import "primeicons/primeicons.css";
 
+:root {
+  --bg-app: #f4f6f9;
+  --bg-card: #ffffff;
+  --bg-header: #f8fafc;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --hover-bg: #f1f5f9;
+}
+
+.dark-mode {
+  --bg-app: #0f172a;
+  --bg-card: #1e293b;
+  --bg-header: #0f172a;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --hover-bg: #334155;
+
+  .p-dialog-content,
+  .p-dialog-header {
+    background-color: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-color) !important;
+  }
+
+  .p-inputtext,
+  .p-dropdown {
+    background-color: var(--bg-app) !important;
+    color: var(--text-main) !important;
+    border-color: var(--border-color) !important;
+  }
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;

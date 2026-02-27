@@ -1,0 +1,77 @@
+.list-wrapper {
+  padding: 30px;
+  height: 100%;
+  overflow-y: auto;
+  background-color: var(--bg-app);
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  h2 {
+    margin: 0;
+    color: var(--text-main);
+  }
+
+  .create-form {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+.layouts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.layout-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: all 0.2s;
+
+  &.active-card {
+    border: 2px solid #3b82f6;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--text-main);
+    }
+
+    .badge-active {
+      background-color: #dcfce7;
+      color: #166534;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+  }
+
+  .card-body {
+    flex-grow: 1;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+}

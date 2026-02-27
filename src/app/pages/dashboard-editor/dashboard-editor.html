@@ -1,7 +1,10 @@
 <div class="dashboard-wrapper" [class.no-scroll]="fullscreenSectionId() || fullscreenWidgetId()">
 
   <div class="global-toolbar">
-    <h2>Dashboard Operacional</h2>
+    <div style="display: flex; gap: 15px; align-items: center;">
+      <p-button icon="pi pi-arrow-left" variant="text" (onClick)="voltar()"></p-button>
+      <h2>Editando: {{ layoutName() }}</h2>
+    </div>
     <p-button label="Personalizar" icon="pi pi-cog" (onClick)="abrirPersonalizacao()"></p-button>
   </div>
 
@@ -81,9 +84,8 @@
   </div>
 </div>
 
-<p-dialog header="Personalizar Dashboard" [visible]="modalVisivel()" (visibleChange)="modalVisivel.set($event)"
-  [modal]="true" [draggable]="false" [resizable]="false" [style]="{ width: '90vw', maxWidth: '480px' }"
-  styleClass="custom-modal">
+<p-dialog header="Personalizar Dashboard" [(visible)]="modalVisivel" [modal]="true" [draggable]="false"
+  [resizable]="false" [style]="{ width: '90vw', maxWidth: '480px' }" styleClass="custom-modal">
 
   <div class="modal-content-styled">
 
@@ -95,9 +97,8 @@
       <p class="section-desc">Crie um novo agrupamento horizontal para organizar seus gráficos.</p>
 
       <div class="input-with-button">
-        <input pInputText placeholder="Ex: Indicadores" [ngModel]="novaSecaoNome()"
-          (ngModelChange)="novaSecaoNome.set($event)" />
-        <p-button label="Criar" icon="pi pi-plus" (onClick)="criarSessao()" [disabled]="!novaSecaoNome()"
+        <input pInputText placeholder="Ex: Indicadores Financeiros" [(ngModel)]="novaSecaoNome" />
+        <p-button label="Criar" icon="pi pi-plus" (onClick)="criarSessao()" [disabled]="!novaSecaoNome"
           styleClass="btn-create"></p-button>
       </div>
     </div>
@@ -113,22 +114,20 @@
 
       <div class="form-group">
         <label>Sessão de Destino:</label>
-        <p-select [options]="opcoesSessoes()" [ngModel]="secaoSelecionadaModal()"
-          (ngModelChange)="secaoSelecionadaModal.set($event)" placeholder="Escolha a Sessão" optionLabel="label"
-          optionValue="value" appendTo="body" [style]="{'width':'100%'}">
+        <p-select [options]="opcoesSessoes()" [(ngModel)]="secaoSelecionadaModal" placeholder="Escolha a Sessão"
+          optionLabel="label" optionValue="value" appendTo="body" [style]="{'width':'100%'}">
         </p-select>
       </div>
 
       <div class="form-group mt-3">
         <label>Selecione o Gráfico:</label>
-        <p-select [options]="graficosDisponiveis" [ngModel]="graficoSelecionadoModal()"
-          (ngModelChange)="graficoSelecionadoModal.set($event)" placeholder="Escolha o Gráfico" optionLabel="label"
-          optionValue="value" appendTo="body" [style]="{'width':'100%'}">
+        <p-select [options]="graficosDisponiveis" [(ngModel)]="graficoSelecionadoModal" placeholder="Escolha o Gráfico"
+          optionLabel="label" optionValue="value" appendTo="body" [style]="{'width':'100%'}">
         </p-select>
       </div>
 
       <p-button label="Adicionar ao Dashboard" icon="pi pi-check" styleClass="w-full mt-4 btn-add"
-        (onClick)="adicionarWidget()" [disabled]="!secaoSelecionadaModal() || !graficoSelecionadoModal()">
+        (onClick)="adicionarWidget()" [disabled]="!secaoSelecionadaModal || !graficoSelecionadoModal">
       </p-button>
     </div>
 
